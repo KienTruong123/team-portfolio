@@ -4,7 +4,7 @@ import DoubleCircleArrowRight from "../icon/DoubleCircleArrowRight";
 
 const Home: FC = () => {
   return (
-    <div className=" h-[calc(100vh-60px)]">
+    <div className="h-[calc(100vh-60px)] md:px-32">
       <div className="flex flex-col-reverse md:grid md:grid-cols-2 justify-around h-full align-middle items-center">
         <div className="md:flex md:flex-col md:gap-10 md:justify-center md:items-center ">
           <div className="md:px-40">
@@ -16,11 +16,13 @@ const Home: FC = () => {
                 </div>
               </div>
             </div>
-            We&apos;re thrilled to have you here and eager to share our knowledge and expertise. Let&apos;s work
-            together to learn and grow.
+            We&apos;re a passionate freelance team eager to share our
+            expertise and collaborate on your project. We combine diverse skills to tackle challenges from every angle,
+            acting as your strategic partners invested in your success. Let&apos;s leverage our combined strengths for a
+            seamless workflow and exceptional results.
           </div>
           <div className="flex items-center">
-            <DoubleCircleArrowRight />
+            <DoubleCircleArrowRight className="animate-wiggle" />
             Hire now
           </div>
         </div>
@@ -30,7 +32,7 @@ const Home: FC = () => {
           width={500}
           height={350}
           alt="avatar"
-          className="w-11/12 md:w-3/4 mx-auto rounded-3xl"
+          className="w-11/12 mx-auto md:w-full rounded-3xl"
         />
       </div>
     </div>
