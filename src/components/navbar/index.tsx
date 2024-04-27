@@ -1,11 +1,12 @@
 "use client";
 import { cn, useDebounce } from "@/libs";
 import Link from "next/link";
+import Image from "next/image";
 import React, { FC, useEffect, useRef, useState } from "react";
 
 export interface NavBarProps {
   items: { id: number; name: string }[];
-  observerRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
+  observerRefs: React.MutableRefObject<(HTMLElement | null)[]>;
 }
 
 const NavBar: FC<NavBarProps> = ({ observerRefs, items = [] }) => {
@@ -36,30 +37,30 @@ const NavBar: FC<NavBarProps> = ({ observerRefs, items = [] }) => {
       });
     }
     return () => currObserver?.forEach((observer) => observer?.disconnect());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observerRefs]);
 
   return (
-    <nav className="container flex items-center justify-between sticky top-5 bg-pr m-10 mt-5">
-      <div className="logo">
-        <Link href="/" className="text-3xl font-bold sm:text-3xl">
-          KT
+    <nav className="container flex items-center justify-center md:justify-around sticky top-5 bg-pr md:mx-10 mt-5">
+      <div className="logo hidden md:block">
+        <Link href="/">
+          <Image alt="logo" src='/logo.svg' width={40} height={40}/>
         </Link>
       </div>
-      <ul className="flex items-center bg-white p-1 rounded-full">
+      <ul className="flex items-center bg-white p-1 rounded-full opacity-80 hover:opacity-100">
         {items.map((item, key) => {
           return (
             <Link href={`#${item.id}`} key={`item-${key}`} scroll>
               <li
                 className={cn(
-                  visibleKey == key && "bg-primary-200 text-primary-800",
-                  "px-5 py-2 rounded-full cursor-pointer"
+                  visibleKey == key ? "bg-primary-200 text-primary-800 font-medium" : "font-extralight",
+                  "px-3 md:px-5 py-1 md:py-2 rounded-full cursor-pointer text-xs"
                 )}
                 onClick={() => {
                   setTimeout(() => setActiveIndex(key), 100);
                 }}
               >
-                <span className="capitalize font-extralight">{item.name}</span>
+                <span className="capitalize ">{item.name}</span>
               </li>
             </Link>
           );
