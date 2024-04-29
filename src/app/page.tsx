@@ -4,7 +4,8 @@ import Footer from "../components/footer";
 import NavBar from "../components/navbar";
 import { LiaLinkedin } from "react-icons/lia";
 import { BsGithub } from "react-icons/bs";
-import Home from "@/components/sections/Home";
+import { StackTech, Home } from "@/components/sections";
+import { Section } from "@/components/sections/Section";
 
 const items = [
   {
@@ -16,7 +17,8 @@ const items = [
   {
     id: 1,
     name: "skills",
-    bgColor: "lightgreen",
+    bgColor: "skyblue",
+    render: StackTech,
   },
   {
     id: 2,
@@ -41,22 +43,24 @@ const footerItems = [
 ];
 
 const Page = () => {
-  const observerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const observerRefs = useRef<(HTMLElement | null)[]>([]);
   return (
     <>
       <NavBar observerRefs={observerRefs} items={items} />
       {items.map((div, key) => {
         const Slot = div.render ?? "div";
         return (
-          <section key={key} id={String(key)} style={{ backgroundColor: div.bgColor }} className="min-h-screen">
-            <div
-              ref={(el) => {
-                observerRefs.current[key] = el;
-              }}
-            >
-              <Slot />
-            </div>
-          </section>
+          <Section
+            ref={(el) => {
+              observerRefs.current[key] = el;
+            }}
+            key={key}
+            id={String(key)}
+            style={{ backgroundColor: div.bgColor }}
+            className="min-h-screen"
+          >
+            <Slot />
+          </Section>
         );
       })}
       <Footer items={footerItems} />
