@@ -41,7 +41,7 @@ const NavBar: FC<NavBarProps> = ({ observerRefs, items = [] }) => {
   }, [observerRefs]);
 
   return (
-    <nav className="container flex items-center justify-center md:justify-around sticky top-5 bg-pr md:mx-10 mt-5">
+    <nav className="container flex items-center justify-center md:justify-around sticky top-5 bg-transparent md:mx-10 mt-5">
       <div className="logo hidden md:block">
         <Link href="/">
           <Image alt="logo" src='/logo.svg' width={40} height={40}/>
