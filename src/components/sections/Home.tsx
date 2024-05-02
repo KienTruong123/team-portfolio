@@ -2,13 +2,13 @@
 import { FC, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { AnimationPlaybackControls, AnimationSequence, Segment, animate, motion, useScroll } from "framer-motion";
 import useWindowDimensions from "@/libs/hooks/use-windown-demensions";
-import { useIsClient } from "@/libs";
+import { minmax, useIsClient } from "@/libs";
 import DoubleCircleArrowRight from "../icon/DoubleCircleArrowRight";
 import Image from "next/image";
 import { FaFacebook, FaReact } from "react-icons/fa";
 import { MdOutlineAddReaction } from "react-icons/md";
 import { CardLoading, Grid4Loading, GridLoading, TextLoading } from "../loading";
-import { BiHeadphone } from "react-icons/bi";
+import { FcLike } from "react-icons/fc";
 
 export const Home: FC<{ parentRef?: any }> = () => {
   const { width } = useWindowDimensions();
@@ -21,14 +21,15 @@ export const Home: FC<{ parentRef?: any }> = () => {
   const panelRef = useRef<HTMLDivElement>(null);
   const animationControls = useRef<AnimationPlaybackControls>();
 
-  const initals = useMemo(
-    () => [
+  const initals = useMemo(() => {
+    const x = width == 0 ? 1500 : Math.max(300, width * 0.5);
+    return [
       {
-        x: -width * 0.5,
+        x: -x,
         y: -5,
         r: -3,
         h: 140,
-        w: width * 0.5,
+        w: minmax(x, 200, 500),
         card: {
           icon: FaFacebook,
           color: "#f47d31",
@@ -36,11 +37,11 @@ export const Home: FC<{ parentRef?: any }> = () => {
         },
       },
       {
-        x: width * 0.5,
+        x,
         y: -10,
         r: 15,
         h: 200,
-        w: width * 0.3,
+        w: minmax(width * 0.3, 150, 300),
         card: {
           icon: FaReact,
           color: "#f47d31",
@@ -48,11 +49,11 @@ export const Home: FC<{ parentRef?: any }> = () => {
         },
       },
       {
-        x: -width * 0.5,
+        x: -x,
         y: -50,
         r: 6,
         h: 300,
-        w: width * 0.35,
+        w: minmax(width * 0.35, 180, 400),
         card: {
           icon: FaFacebook,
           color: "#f47d31",
@@ -60,11 +61,11 @@ export const Home: FC<{ parentRef?: any }> = () => {
         },
       },
       {
-        x: width * 0.55,
+        x,
         y: -50,
         r: -5,
         h: 400,
-        w: width * 0.45,
+        w: minmax(width * 0.45, 190, 450),
         card: {
           icon: FaFacebook,
           color: "#f47d31",
@@ -72,11 +73,11 @@ export const Home: FC<{ parentRef?: any }> = () => {
         },
       },
       {
-        x: -width * 0.45,
+        x: -x,
         y: -40,
         r: 70,
         h: 400,
-        w: width * 0.2,
+        w: minmax(width * 0.2, 150, 300),
         card: {
           icon: FaFacebook,
           color: "#f47d31",
@@ -84,20 +85,19 @@ export const Home: FC<{ parentRef?: any }> = () => {
         },
       },
       {
-        x: width * 0.5,
+        x,
         y: -50,
         r: 10,
         h: 160,
-        w: width * 0.55,
+        w: minmax(x, 200, 500),
         card: {
           icon: FaFacebook,
           color: "#f47d31",
           loading: GridLoading,
         },
       },
-    ],
-    [width]
-  );
+    ];
+  }, [width]);
 
   useLayoutEffect(() => {
     if (isClient) {
@@ -106,15 +106,18 @@ export const Home: FC<{ parentRef?: any }> = () => {
         const avatarRef = avatarRefs.current[key];
         const detailRef = detailRefs.current[key];
         const motionRef = motionRefs.current[key];
+
+        const timeLineSecond = 1 + (initals.length - key) * 0.25;
         return [
+          [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 0.5 }],
           [
             panelCardRef,
-            { rotate: 0, x: 0, y: `${10 * key}%`, height: "100%", width: width * 0.4 },
-            { ease: "linear", at: 0, duration: 0.5 },
+            { height: "100%", width: Math.max(350, width * 0.4) },
+            { ease: "linear", at: timeLineSecond, duration: 0.5 },
           ],
-          [detailRef, { y: 0 }, { ease: "linear", at: 1, duration: 0.5 }],
-          [avatarRef, { opacity: 1 }, { ease: "linear", at: 1, duration: 0.5 }],
-          [motionRef, { rotateY: 180 }, { ease: "linear", at: 1, duration: 0.5 }],
+          [detailRef, { y: 0 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
+          [avatarRef, { opacity: 1 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
+          [motionRef, { rotateY: 180 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
         ] as Segment[];
       });
 
@@ -145,19 +148,18 @@ export const Home: FC<{ parentRef?: any }> = () => {
   });
 
   return (
-    <div className="h-screen overflow-y-scroll hidden-scrollbar relative" ref={homeRef}>
+    <div className="h-screen overflow-y-scroll hidden-scrollbar relative introduce w-screen overflow-x-hidden" ref={homeRef}>
       <div className="relative z-20">
-        <div className="min-h-screen absolute grid items-center top-0 left-0 right-0 pointer-events-none z-3">
+        <div className="min-h-screen absolute grid items-center top-0 left-0 right-0 pointer-events-none z-3 ">
           <div className="screen-content">
             <h1>
               Build your dreams
               <br />
               <span className="text-primary-600">now</span>
             </h1>
-            <p>We are NoobTeam.</p>
             <div className="flex items-center">
               <DoubleCircleArrowRight className="animate-wiggle" />
-              Hire now
+              <h5>Hire we</h5>
             </div>
           </div>
         </div>
@@ -172,7 +174,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
               return (
                 <div className="container-size flex justify-center" key={key}>
                   <motion.div
-                    className="flex items-start bg-gray-50 shadow-lg rounded-lg overflow-hidden"
+                    className="flex items-start bg-gray-50 shadow-2xl rounded-lg overflow-hidden border"
                     style={{
                       x: item.x,
                       y: `${item.y}%`,
@@ -226,7 +228,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
                             <MdOutlineAddReaction />
                           </div>
                           <div className="flip-card-back">
-                            <BiHeadphone />
+                            <FcLike />
                           </div>
                         </motion.div>
                       </div>
@@ -251,7 +253,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
 
 const Loading4 = () => (
   <>
-    <GridLoading />
+    {/* <GridLoading /> */}
     <Grid4Loading className="w-3/5" />
   </>
 );
