@@ -13,11 +13,12 @@ const items = [
     name: "home",
     bgColor: "lightpurple",
     render: Home,
+    className: "relative w-full overflow-x-hidden hidden-scrollbar",
   },
   {
     id: 1,
     name: "skills",
-    bgColor: "skyblue",
+    className: "bg-gray-900",
     render: StackTech,
   },
   {
@@ -47,8 +48,8 @@ const Page = () => {
   return (
     <>
       <NavBar observerRefs={observerRefs} items={items} />
-      {items.map((div, key) => {
-        const Slot = div.render ?? "div";
+      {items.map((element, key) => {
+        const Slot = element.render ?? "div";
         return (
           <Section
             ref={(el) => {
@@ -56,8 +57,8 @@ const Page = () => {
             }}
             key={key}
             id={String(key)}
-            style={{ backgroundColor: div.bgColor }}
-            className="min-h-screen"
+            style={{ backgroundColor: element.bgColor }}
+            className={element.className}
           >
             <Slot />
           </Section>
