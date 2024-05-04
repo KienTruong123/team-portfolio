@@ -7,17 +7,17 @@ export const StackTech: FC = () => {
   return (
     <>
       <section className="min-h-screen  text-center py-20 px-8 xl:px-0 flex flex-col justify-center">
-        <span className="text-gray-400 text-lg max-w-lg mx-auto mb-2 capitalize flex items-center">
-          what we-re offering <FaArrowRight color="primary" />
+        <span className="text-gray-400 text-lg max-w-lg mx-auto mb-2 capitalize flex items-center gap-2">
+          what we are offering <FaArrowRight color="primary" />
         </span>
         <h2 className="text-white leading-normal">Unlock Your Business Potential</h2>
-        <div className="grid-offer text-left grid sm:grid-cols-2 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+        <div className="text-left grid sm:grid-cols-2 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
           {items.map(({ title, content, className, img }, key) => {
             const { className: cardClass, ...style } = variants[key % 4];
             return (
               <div
                 className={cn(
-                  "before:content-[' '] card before:bg-primary-600 before:w-full before:h-full before:absolute before:z-0 before:duration-700 bg-gray-800 p-10 relative hover:before:[clip-path:circle(100vw_at_100%_100%)] hover:shadow-xl",
+                  "before:content-[' '] before:bg-primary-600 before:w-full before:h-full before:absolute before:z-0 before:duration-700 bg-gray-800 p-10 relative hover:before:[clip-path:circle(100vw_at_100%_100%)] hover:shadow-xl",
                   cardClass
                 )}
                 key={key}
