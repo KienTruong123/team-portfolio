@@ -1,42 +1,13 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Footer from "../components/footer";
 import NavBar from "../components/navbar";
 import { LiaLinkedin } from "react-icons/lia";
 import { BsGithub } from "react-icons/bs";
-import { StackTech, Home } from "@/components/sections";
-import { Section } from "@/components/sections/Section";
 
-const items = [
-  {
-    id: 0,
-    name: "home",
-    bgColor: "lightpurple",
-    render: Home,
-    className: "relative w-full overflow-x-hidden hidden-scrollbar",
-  },
-  {
-    id: 1,
-    name: "skills",
-    className: "bg-gray-900",
-    render: StackTech,
-  },
-  {
-    id: 2,
-    name: "works",
-    bgColor: "skyblue",
-  },
-  {
-    id: 3,
-    name: "resume",
-    bgColor: "lightgreen",
-  },
-  {
-    id: 4,
-    name: "contact",
-    bgColor: "lightsalmon",
-  },
-];
+import { Section } from "@/components/sections/Section";
+import { FaBell, FaCamera, FaCodepen, FaFlag, FaHome, FaQuestion, FaSave, FaTrashAlt } from "react-icons/fa";
+import { sections } from "./data/sections";
 
 const footerItems = [
   { href: "", icon: LiaLinkedin, name: "Linkedin" },
@@ -45,10 +16,11 @@ const footerItems = [
 
 const Page = () => {
   const observerRefs = useRef<(HTMLElement | null)[]>([]);
+
   return (
     <>
-      <NavBar observerRefs={observerRefs} items={items} />
-      {items.map((element, key) => {
+      <NavBar observerRefs={observerRefs} items={sections} />
+      {sections.map((element, key) => {
         const Slot = element.render ?? "div";
         return (
           <Section

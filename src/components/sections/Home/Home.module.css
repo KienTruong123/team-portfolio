@@ -1,10 +1,4 @@
-:root {
-  --card: hsl(0 0% 98%);
-  --element: hsl(0 0% 90%);
-  --entity-size: 30px;
-}
-
-.screen-content {
+.screenContent {
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -25,11 +19,13 @@
   padding: 2rem;
 }
 
-.container-size {
+.itemCard {
   container-type: size;
+  display: flex;
+  justify-content: center;
 }
 
-.box-cols {
+.boxCols {
   width: 100cqh;
   height: 100cqh;
   display: grid;
@@ -37,27 +33,27 @@
   position: relative;
 }
 
-.box-avatar {
-  height: var(--entity-size);
+.boxAvatar {
+  height: 30px;
   aspect-ratio: 1;
-  background: var(--element);
+  background:  hsl(0 0% 90%);
   border-radius: 50%;
   position: relative;
   overflow: hidden;
 }
 
-.box-avatar * {
+.boxAvatar * {
   position: absolute;
   inset: 0;
   width: 100%;
   object-fit: cover;
 }
 
-.image svg {
+.imageHolder svg {
   width: 50%;
 }
 
-.box-infos {
+.boxInfos {
   height: 100cqh;
   display: flex;
   align-items: center;
@@ -66,7 +62,7 @@
   position: relative;
 }
 
-.box-loading {
+.boxLoading {
   height: 160cqh;
   width: 100%;
   position: absolute;
@@ -77,23 +73,18 @@
   gap: 0.5rem;
 }
 
-.image {
-  height: var(--entity-size);
+.imageHolder {
+  height: 30px;
   aspect-ratio: 1;
-  background: var(--element);
+  background:  hsl(0 0% 90%);
   border-radius: 50%;
   overflow: hidden;
   display: grid;
   place-items: center;
 }
 
-.text-wrap {
-  display: grid;
-  gap: 0.5rem;
-  max-width: 65%;
-}
-
-.ring--wrapper {
+.ringWrapperBack,
+.ringWrapperFront {
   position: absolute;
   top: 50%;
   left: 0;
@@ -102,7 +93,12 @@
   pointer-events: none;
 }
 
-.ring--wrapper img {
+.ringWrapperFront {
+  z-index: 10;
+}
+
+.ringWrapperFront img,
+.ringWrapperBack img {
   filter: hue-rotate(40deg);
   width: 100%;
   min-width: 700px;
@@ -114,23 +110,23 @@
   object-fit: cover;
 }
 
-
 /* FLIP */
-
-.flip-card {
+.flipCard {
   background-color: transparent;
   width: 10px;
   height: 10px;
   perspective: 1000px;
+  pointer-events: none;
 }
 
-.flip-card-inner {
+.flipCardContent {
   position: relative;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
-.flip-card-front, .flip-card-back {
+.flipCardFront,
+.flipCardBack {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -138,11 +134,18 @@
   backface-visibility: hidden;
 }
 
-.flip-card-front {
+.flipCardFront {
   color: black;
 }
 
-.flip-card-back {
+.flipCardBack {
   color: black;
   transform: rotateY(180deg);
+}
+
+.dream{
+  background: url('/dream.webp');
+  background-repeat: no-repeat;
+    background-size: 100% auto;
+  height: 150vh;  background-position: bottom;
 }

@@ -1,13 +1,22 @@
 "use client";
-import { FC, useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { AnimationPlaybackControls, AnimationSequence, Segment, animate, motion, useScroll } from "framer-motion";
-import useWindowDimensions from "@/libs/hooks/use-windown-demensions";
-import { minmax, useIsClient } from "@/libs";
-import DoubleCircleArrowRight from "../icon/DoubleCircleArrowRight";
+import styles from "./Home.module.css";
 import Image from "next/image";
+import { FC, useLayoutEffect, useMemo, useRef } from "react";
+import {
+  AnimationPlaybackControls,
+  AnimationSequence,
+  LayoutGroup,
+  Segment,
+  animate,
+  motion,
+  useScroll,
+} from "framer-motion";
+import useWindowDimensions from "@/libs/hooks/use-windown-demensions";
+import { cn, minmax, useIsClient } from "@/libs";
+import DoubleCircleArrowRight from "../../icon/DoubleCircleArrowRight";
 import { FaFacebook, FaReact } from "react-icons/fa";
 import { MdOutlineAddReaction } from "react-icons/md";
-import { CardLoading, Grid4Loading, GridLoading, TextLoading } from "../loading";
+import { CardLoading, Grid4Loading, GridLoading, TextLoading } from "../../loading";
 import { FcLike } from "react-icons/fc";
 
 export const Home: FC<{ parentRef?: any }> = () => {
@@ -18,6 +27,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
   const detailRefs = useRef<(HTMLElement | null)[]>([]);
   const motionRefs = useRef<(HTMLElement | null)[]>([]);
   const homeRef = useRef<HTMLDivElement>(null);
+  const homeBottomRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const animationControls = useRef<AnimationPlaybackControls>();
 
@@ -101,7 +111,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
 
   useLayoutEffect(() => {
     if (isClient) {
-      const sequence = initals.flatMap((item, key) => {
+      const sequence = initals.flatMap((_, key) => {
         const panelCardRef = panelCardRefs.current[key];
         const avatarRef = avatarRefs.current[key];
         const detailRef = detailRefs.current[key];
@@ -109,19 +119,19 @@ export const Home: FC<{ parentRef?: any }> = () => {
 
         const timeLineSecond = 1 + (initals.length - key) * 0.25;
         return [
-          [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 0.5 }],
+          [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 1 }],
           [
             panelCardRef,
             { height: "100%", width: Math.max(350, width * 0.4) },
             { ease: "linear", at: timeLineSecond, duration: 0.5 },
           ],
-          [detailRef, { y: 0 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
-          [avatarRef, { opacity: 1 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
-          [motionRef, { rotateY: 180 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
+          // [detailRef, { y: 0 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
+          // [avatarRef, { opacity: 1 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
+          // [motionRef, { rotateY: 180 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
         ] as Segment[];
       });
 
-      if (panelRef.current) {
+      if (panelRef.current && homeBottomRef.current) {
         sequence.push([
           panelRef.current,
           {
@@ -131,6 +141,13 @@ export const Home: FC<{ parentRef?: any }> = () => {
             backgroundColor: "#f8f8fc",
           },
           { at: 2 },
+        ]);
+        sequence.push([
+          homeBottomRef.current,
+          {
+            opacity: 1,
+          },
+          { at: 2.5 },
         ]);
       }
 
@@ -143,15 +160,20 @@ export const Home: FC<{ parentRef?: any }> = () => {
   const { scrollYProgress } = useScroll({ container: homeRef });
 
   scrollYProgress.on("change", (yProgress) => {
-    if (!animationControls.current) return;
-    animationControls.current.time = yProgress * animationControls.current.duration;
+    requestAnimationFrame(() => {
+      if (animationControls.current)
+        animationControls.current.time = yProgress * animationControls.current.duration + 0.1;
+    });
   });
 
   return (
-    <div className="h-screen overflow-y-scroll hidden-scrollbar relative introduce w-screen overflow-x-hidden" ref={homeRef}>
+    <div
+      className="h-screen overflow-y-scroll hidden-scrollbar relative introduce w-screen overflow-x-hidden"
+      ref={homeRef}
+    >
       <div className="relative z-20">
         <div className="min-h-screen absolute grid items-center top-0 left-0 right-0 pointer-events-none z-3 ">
-          <div className="screen-content">
+          <div className={styles.screenContent}>
             <h1>
               Build your dreams
               <br />
@@ -165,14 +187,14 @@ export const Home: FC<{ parentRef?: any }> = () => {
         </div>
       </div>
       <div className="sticky top-0 pointer-events-none z-10">
-        <div className="screen-content">
-          <motion.div className="panel" ref={panelRef}>
+        <div className={styles.screenContent}>
+          <motion.div className={styles.panel} ref={panelRef}>
             {initals.map((item, key) => {
               const { card } = item;
               const Icon = card.icon;
               const Loading = card.loading;
               return (
-                <div className="container-size flex justify-center" key={key}>
+                <div className={styles.itemCard} key={key}>
                   <motion.div
                     className="flex items-start bg-gray-50 shadow-2xl rounded-lg overflow-hidden border"
                     style={{
@@ -186,8 +208,8 @@ export const Home: FC<{ parentRef?: any }> = () => {
                       panelCardRefs.current[key] = el;
                     }}
                   >
-                    <div className="box-cols w-full h-full">
-                      <div className="box-avatar shadow">
+                    <div className={cn(styles.boxCols, "full")}>
+                      <div className={cn(styles.boxAvatar, "shadow")}>
                         <motion.img
                           src="/avatar/KienTruong.jpeg"
                           alt=""
@@ -204,30 +226,30 @@ export const Home: FC<{ parentRef?: any }> = () => {
                           detailRefs.current[key] = el;
                         }}
                         style={{ y: -50 }}
-                        className="box-infos"
+                        className={styles.boxInfos}
                       >
                         <TextLoading />
-                        <div className="image">
+                        <div className={styles.imageHolder}>
                           <Icon />
                         </div>
                         <TextLoading />
-                        <div className="box-loading">
+                        <div className={styles.boxLoading}>
                           <Loading />
                         </div>
                       </motion.div>
                     </div>
-                    <div className="box-cols self-end">
-                      <div className="flip-card pointer-events-auto">
+                    <div className={cn(styles.boxCols, "self-end")}>
+                      <div className={styles.flipCard}>
                         <motion.div
                           ref={(el) => {
                             motionRefs.current[key] = el;
                           }}
-                          className="flip-card-inner"
+                          className={styles.flipCardContent}
                         >
-                          <div className="flip-card-front">
+                          <div className={styles.flipCardFront}>
                             <MdOutlineAddReaction />
                           </div>
-                          <div className="flip-card-back">
+                          <div className={styles.flipCardBack}>
                             <FcLike />
                           </div>
                         </motion.div>
@@ -240,13 +262,13 @@ export const Home: FC<{ parentRef?: any }> = () => {
           </motion.div>
         </div>
       </div>
-      <div className="ring--wrapper">
+      <div className={styles.ringWrapperBack}>
         <Image src="/portal-ring.png" alt="ring" width={500} height={100} />
       </div>
-      <div className="ring--wrapper z-10">
+      <div className={styles.ringWrapperFront}>
         <Image className="clip-path-50" src="/portal-ring.png" alt="ring" width={500} height={100} />
       </div>
-      <div className="h-[150vh]" />
+      <motion.div className={styles.dream} ref={homeBottomRef} initial={{ opacity: 0 }} />
     </div>
   );
 };
