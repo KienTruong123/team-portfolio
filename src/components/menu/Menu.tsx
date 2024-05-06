@@ -1,54 +1,60 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import styles from "./Menu.module.css";
+import { cn, generateRandomColor } from "@/libs";
 
-const PI = Math.PI;
-const update = (
-  canvasRef: React.RefObject<HTMLCanvasElement>,
-  size: number,
-  event?: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-) => {
-  const canvas = canvasRef.current;
-  const ctx = canvas?.getContext("2d");
-  if (!canvas || !ctx) return;
-  const rect = canvas.getBoundingClientRect();
-  const mouseX = event ? event.clientX - rect.left : 0;
-  const mouseY = event ? event.clientY - rect.top : 0;
-  const radius = size / 2;
+interface MenuProps {
+  open: boolean;
+  items: MenuItem[];
+}
 
-  ctx.clearRect(0, 0, size, size);
-  const mouseAngle = (-Math.atan2(mouseX - radius, mouseY - radius) + PI * 2.5) % (PI * 2);
-  const mouseRadius = Math.sqrt(Math.pow(mouseX - radius, 2) + Math.pow(mouseY - radius, 2));
+interface MenuItem {
+  icon: any;
+  color: string;
+  borderColor: string;
+}
 
-  for (let i = 0; i < 8; i++) {
-    const angle = -PI / 8 + i * (PI / 4);
+const Menu: React.FC<MenuProps> = ({ open, items }) => {
+  const [activeIndex, setActiveIndex] = useState(-1);
 
-    if (mouseAngle > angle && mouseAngle < angle + PI / 4 && mouseRadius <= radius && mouseRadius >= 69) {
-      ctx.fillStyle = "#000";
-    } else {
-      ctx.fillStyle = "#ccc";
-    }
+  return (
+    <div className={styles.wheel}>
+      {items.map((item, key) => {
+        const color = generateRandomColor((key+1) << 4) || item.color;
+        console.log(color);
+        const MenuItem = item.icon;
+        const active = activeIndex == key;
+        const rotate = key * 45 + "deg";
+        const style: React.CSSProperties = {
+          backgroundImage: `radial-gradient(
+        circle at left bottom,
+        transparent,
+        transparent 39.5%,
+        ${item.borderColor} 40%,
+        ${item.borderColor} 40.5%,
+        ${color} 41%,
+        ${color} 60%,
+        ${item.borderColor} 60.25%,
+        ${item.borderColor} 61.5%,
+        transparent 61.75%,
+        transparent
+      )`,
+          rotate,
+        };
 
-    ctx.beginPath();
-    ctx.moveTo(radius, radius);
-    ctx.arc(radius, radius, radius, angle, angle + PI / 4, false);
-    ctx.lineTo(radius, radius);
-    ctx.fill();
-  }
-
-  ctx.fillStyle = "#fff";
-  ctx.beginPath();
-  ctx.arc(radius, radius, 69, 0, 2 * PI, false);
-  ctx.fill();
-};
-
-const Menu: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const size = 250;
-
-  useEffect(() => {
-    update(canvasRef, size);
-  }, []);
-
-  return <canvas ref={canvasRef} width={size} height={size} onMouseMove={(e) => update(canvasRef, size, e)}></canvas>;
+        return (
+          <menu
+            key={key}
+            onMouseEnter={() => setActiveIndex(key)}
+            onMouseLeave={() => setActiveIndex(-1)}
+            className={cn(styles.arc, open && styles.show, active && open && styles.active)}
+            style={style}
+          >
+            <MenuItem color={active ? "#000" : "#fff"} className={styles.content} style={{ rotate: "-" + rotate }} />
+          </menu>
+        );
+      })}
+    </div>
+  );
 };
 
 export default Menu;
