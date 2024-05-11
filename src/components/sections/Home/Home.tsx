@@ -116,15 +116,20 @@ export const Home: FC<{ parentRef?: any }> = () => {
         const avatarRef = avatarRefs.current[key];
         const detailRef = detailRefs.current[key];
         const motionRef = motionRefs.current[key];
-
+      
         const timeLineSecond = 1 + (initals.length - key) * 0.25;
         return [
-          [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 1 }],
-          [
-            panelCardRef,
-            { height: "100%", width: Math.max(350, width * 0.4) },
-            { ease: "linear", at: timeLineSecond, duration: 0.5 },
-          ],
+          // [
+          //   panelCardRef,
+          //   { rotate: 0, x: 0, y: `${10 * key - 30}%`, width: Math.max(350, width * 0.4),  height: "100%" },
+          //   { ease: "linear", at: 0, duration: 1 },
+          // ],
+            [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 1 }],
+        [
+          panelCardRef,
+          { height: "100%", width: Math.max(350, width * 0.4) },
+          { ease: "linear", at: timeLineSecond, duration: 0.5 },
+        ],
           // [detailRef, { y: 0 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
           // [avatarRef, { opacity: 1 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
           // [motionRef, { rotateY: 180 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
@@ -132,16 +137,6 @@ export const Home: FC<{ parentRef?: any }> = () => {
       });
 
       if (panelRef.current && homeBottomRef.current) {
-        sequence.push([
-          panelRef.current,
-          {
-            boxShadow: `0 32px 32px rgba(23,22,24,.04),0 16px 16px rgba(23,22,24,.04),0 8px 8px rgba(23,22,24,.04)`,
-            borderRadius: 18,
-            border: 2,
-            backgroundColor: "#f8f8fc",
-          },
-          { at: 2 },
-        ]);
         sequence.push([
           homeBottomRef.current,
           {
@@ -162,7 +157,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
   scrollYProgress.on("change", (yProgress) => {
     requestAnimationFrame(() => {
       if (animationControls.current)
-        animationControls.current.time = yProgress * animationControls.current.duration + 0.1;
+        animationControls.current.time = minmax(yProgress, 0, 1) * animationControls.current.duration;
     });
   });
 
