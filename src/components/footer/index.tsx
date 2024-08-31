@@ -16,7 +16,7 @@ export interface FooterProps {
 
 const Footer: FC<FooterProps> = ({ items }) => {
   return (
-    <footer className="m-auto h-30 md:h-60 bg-yellow-400 flex flex-col gap-3 md:gap-8 items-center justify-between p-2 md:p-10">
+    <footer className="m-auto h-30 md:h-60 flex flex-col gap-3 md:gap-8 items-center justify-between p-2 md:p-10">
       <h2 className="font-bold text-2xl md:text-5xl">Let&#39;s Talk</h2>
       <div className=" flex items-center justify-center gap-4 md:gap-8">
         {items.map((item, key) => (
@@ -38,7 +38,7 @@ const FooterItem: FC<FooterItem> = ({ href, name, icon }) => {
       href={href}
       className="box font-medium text-xs md:text-base text-white flex items-center justify-center flex-col cursor-pointer"
     >
-      <Icon className=" text-black text-3xl" />
+      <Icon className="text-black text-3xl" />
       <p>{name}</p>
     </Link>
   );

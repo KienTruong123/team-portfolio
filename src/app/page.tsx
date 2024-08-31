@@ -16,7 +16,18 @@ const footerItems = [
 
 const Page = () => {
   const observerRefs = useRef<(HTMLElement | null)[]>([]);
-
+  const [showing, setShowing] = useState(true);
+  // const menuItems = [
+  //   { icon: FaHome, color: "hsl(0deg, 36%, 60%)", borderColor: "hsl(0deg, 36%, 40%)" },
+  //   { icon: FaQuestion, color: "hsl(45deg, 36%, 60%)", borderColor: "hsl(45deg, 36%, 40%)" },
+  //   { icon: FaBell, color: "hsl(90deg, 36%, 60%)", borderColor: "hsl(90deg, 36%, 40%)" },
+  //   { icon: FaCamera, color: "hsl(0deg, 36%, 60%)", borderColor: "hsl(0deg, 36%, 40%)" },
+  //   { icon: FaTrashAlt, color: "hsl(45deg, 36%, 60%)", borderColor: "hsl(45deg, 36%, 40%)" },
+  //   { icon: FaSave, color: "hsl(90deg, 36%, 60%)", borderColor: "hsl(90deg, 36%, 40%)" },
+  //   { icon: FaFlag, color: "hsl(45deg, 36%, 60%)", borderColor: "hsl(45deg, 36%, 40%)" },
+  //   { icon: FaCodepen, color: "hsl(0deg, 36%, 60%)", borderColor: "hsl(0deg, 36%, 40%)" },
+  // ];
+  // return  <Menu open={showing} items={menuItems}/>
   return (
     <>
       <NavBar observerRefs={observerRefs} items={sections} />

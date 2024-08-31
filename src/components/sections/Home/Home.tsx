@@ -1,7 +1,7 @@
 "use client";
 import styles from "./Home.module.css";
 import Image from "next/image";
-import { FC, useLayoutEffect, useMemo, useRef } from "react";
+import { FC, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   AnimationPlaybackControls,
   AnimationSequence,
@@ -18,6 +18,7 @@ import { FaFacebook, FaReact } from "react-icons/fa";
 import { MdOutlineAddReaction } from "react-icons/md";
 import { CardLoading, Grid4Loading, GridLoading, TextLoading } from "../../loading";
 import { FcLike } from "react-icons/fc";
+import { Typer } from "@/components/text/Typer";
 
 export const Home: FC<{ parentRef?: any }> = () => {
   const { width } = useWindowDimensions();
@@ -30,7 +31,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
   const homeBottomRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const animationControls = useRef<AnimationPlaybackControls>();
-
+  const [frame, setFrame] = useState(1);
   const initals = useMemo(() => {
     const x = width == 0 ? 1500 : Math.max(300, width * 0.5);
     return [
@@ -116,7 +117,7 @@ export const Home: FC<{ parentRef?: any }> = () => {
         const avatarRef = avatarRefs.current[key];
         const detailRef = detailRefs.current[key];
         const motionRef = motionRefs.current[key];
-      
+
         const timeLineSecond = 1 + (initals.length - key) * 0.25;
         return [
           // [
@@ -124,12 +125,12 @@ export const Home: FC<{ parentRef?: any }> = () => {
           //   { rotate: 0, x: 0, y: `${10 * key - 30}%`, width: Math.max(350, width * 0.4),  height: "100%" },
           //   { ease: "linear", at: 0, duration: 1 },
           // ],
-            [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 1 }],
-        [
-          panelCardRef,
-          { height: "100%", width: Math.max(350, width * 0.4) },
-          { ease: "linear", at: timeLineSecond, duration: 0.5 },
-        ],
+          [panelCardRef, { rotate: 0, x: 0, y: `${10 * key - 30}%` }, { ease: "linear", at: 0, duration: 1 }],
+          [
+            panelCardRef,
+            { height: "100%", width: Math.max(350, width * 0.4) },
+            { ease: "linear", at: timeLineSecond, duration: 0.5 },
+          ],
           // [detailRef, { y: 0 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
           // [avatarRef, { opacity: 1 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
           // [motionRef, { rotateY: 180 }, { ease: "linear", at: timeLineSecond, duration: 0.5 }],
